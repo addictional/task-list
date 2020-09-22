@@ -19,7 +19,7 @@ const NewTask : React.FC<Props> = ({visibility,onClose}) => {
     }
     return(
         <Popup visibility={visibility} onClose={handleClose}>
-            <Task>
+            <Task onSuccess={handleClose}>
                 <Button color='#39B54A'>Создать</Button>
             </Task>
         </Popup>

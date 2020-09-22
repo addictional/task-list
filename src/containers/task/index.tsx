@@ -15,10 +15,11 @@ interface Props {
     disabled? : boolean;
     error?: string;
     align?: string;
+    onSuccess?(): void;
 }
 
 
-const Task : React.FC<Props> = ({description = '',disabled = false,children,align = 'right'}) => {
+const Task : React.FC<Props> = ({description = '',disabled = false,children,align = 'right',onSuccess}) => {
     const dispatch = useThunkDispatch();
 
 
@@ -36,6 +37,9 @@ const Task : React.FC<Props> = ({description = '',disabled = false,children,alig
     const handleSubmit = async ({title} : FormikValues,actions : FormikHelpers<FormikValues>)=> {
         try{
             await dispatch(Actions.Main.createTaskAsync(title));
+            if(typeof onSuccess === 'function') {
+                onSuccess();
+            }
         } catch (e) {
             actions.setErrors({title: e.message});
         }
