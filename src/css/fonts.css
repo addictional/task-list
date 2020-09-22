@@ -1,0 +1,26 @@
+@font-face {
+    font-family: 'Roboto-Regular';
+    src: url('/fonts/Roboto-Regular.ttf');
+    src: local('Roboto-Regular'), local('Roboto-Regular'),
+        url('/fonts/Roboto-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto-Bold';
+    src: url('/fonts/Roboto-Bold.ttf');
+    src: local('Roboto-Bold'), local('Roboto-Bold'),
+        url('/fonts/Roboto-Bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Tahoma';
+    src: url('/fonts/Tahoma.ttf');
+    src: local('Tahoma'), local('Tahoma'),
+        url('/fonts/Tahoma.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}

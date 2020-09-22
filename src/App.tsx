@@ -1,24 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './css/index.css';
+import {ThemeProvider} from 'styled-components';
+import {MainTheme} from './theme/defaultTheme';
+import ListView from '@views/list';
+import store from '@store/index';
+import {Provider} from 'react-redux';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import TaskView from '@views/task';
+
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <ThemeProvider theme={MainTheme}>
+        <Provider store={store}>
+          <Router>
+            <Switch>
+              <Route exact path="/" render={()=> <ListView/>}/>
+              <Route path="/task/:id" render={()=> <TaskView/>}/>
+            </Switch>
+          </Router>
+        </Provider>
+      </ThemeProvider>
     </div>
   );
 }
