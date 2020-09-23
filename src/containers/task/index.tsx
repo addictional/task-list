@@ -54,24 +54,31 @@ const Task : React.FC<Props> = ({description = '',disabled = false,children,alig
     }
 
 
-    const handleBlur = () => {
+    const customHandleBlur = () => {
         if(typeof onBlur === 'function') {
             onBlur();
         }
     }
 
-    const handleChange : React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    const handleChangeCustom : React.ChangeEventHandler<HTMLInputElement> = (e) => {
         if(typeof onChange === 'function') {
             onChange(e.target.value);
         }
+        
     }
 
     return (
         <Wrapper>
             <Formik enableReinitialize initialValues={initialValues} onSubmit={handleSubmit} validate={validate} >
-                {({ errors }) => (
+                {({ errors,handleChange,handleBlur }) => (
                     <Form>
-                        <Input onChange={handleChange} onFocus={handleFocus} onBlur={handleBlur} disabled={disabled} label="Краткое описание" error={errors.title} name="title" id="title"/>
+                        <Input onChange={(e)=>{
+                                handleChange(e);
+                                handleChangeCustom(e);
+                            }} onFocus={handleFocus} onBlur={(e) => {
+                                handleBlur(e);
+                                customHandleBlur();
+                            }} disabled={disabled} label="Краткое описание" error={errors.title} name="title" id="title"/>
                         <ChildrenWrapper align={align}>{children}</ChildrenWrapper>
                     </Form>
                 )}
