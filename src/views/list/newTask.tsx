@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback} from 'react';
 import {
     Button,
     Popup
@@ -11,12 +11,13 @@ interface Props {
 }
 
 const NewTask : React.FC<Props> = ({visibility,onClose}) => {
-
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         if(typeof onClose === 'function') {
             onClose();
         }
-    }
+    },[onClose])
+
+    
     return(
         <Popup visibility={visibility} onClose={handleClose}>
             <Task onSuccess={handleClose}>

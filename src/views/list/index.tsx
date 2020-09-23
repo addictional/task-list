@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import {useSelector} from 'react-redux';
 import {useThunkDispatch} from '@store/index'
 import Actions from '@store/allActions';
@@ -8,7 +8,6 @@ import {
     MainWrapper,
     Table,
 } from '@components/index';
-import {FormikValues} from '../../containers/task';
 import {TitleWrapper} from './styles';
 import {useHistory} from 'react-router-dom';
 import NewTask from './newTask';
@@ -19,7 +18,7 @@ const {Main} = Actions;
 
 const List : React.FC = ()=>{
     const [popup,setPopup] = useState(false);
-    const {taskList: {items,error}} = useSelector(({main}) => main);
+    const {taskList: {items}} = useSelector(({main}) => main);
     const history = useHistory();
     const dispatch = useThunkDispatch();
 
@@ -31,18 +30,18 @@ const List : React.FC = ()=>{
         setPopup(true);
     }
 
-    const closePopup = ()=> {
+    const closePopup = useCallback(()=> {
         setPopup(false);
-    }
+    },[])
     
-    const handleDelete = (value : any) => {
+    const handleDelete = useCallback((value : any) => {
         dispatch(Main.deleteTaskAsync(value.id));
-    }
+    },[]) // eslint-disable-line react-hooks/exhaustive-deps
 
-    const handleEdit = (value : any) => {
+    const handleEdit = useCallback((value : any) => {
         //temporate redirect to detail page
         history.push(`/task/${value.id}`);
-    }
+    },[]) // eslint-disable-line react-hooks/exhaustive-deps
 
     
     return (

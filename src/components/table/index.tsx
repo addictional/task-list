@@ -17,16 +17,16 @@ interface Props {
 }
 
 const CustomTable : React.FC<Props> = ({items,onDelete,onEdit}) => {
-    const handleDelete = useCallback((item)=>{
+    const handleDelete = useCallback((item : BaseItem)=>{
         if(typeof onDelete === 'function') {
             onDelete(item);
         }
-    },[])
-    const handleEdit = useCallback((item)=>{
+    },[onDelete])
+    const handleEdit = useCallback((item : BaseItem)=>{
         if(typeof onEdit === 'function') {
             onEdit(item);
         }
-    },[])
+    },[onEdit])
     const Rows = items.map(item => {
         return <Row onDelete={handleDelete} onEdit={handleEdit} item={{...item}} key={item.id}/>
     })
