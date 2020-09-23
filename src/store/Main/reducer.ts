@@ -45,7 +45,7 @@ const reducer : Reducer<MainState,AllActions> = (state = defaultState,action) =>
             if(payload.error) {
                 state.taskList.error = payload.error;
             }
-            return {...state,taskList: {...taskList,items: taskList.items},deleteAction: {...state.deleteAction,...payload}}
+            return {...state,taskList: {...taskList,items: [...taskList.items]},deleteAction: {...state.deleteAction,...payload}}
         }
         default: {
             return {...state};
