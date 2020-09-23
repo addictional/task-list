@@ -29,15 +29,28 @@ const reducer : Reducer<MainState,AllActions> = (state = defaultState,action) =>
                 state.taskList.error = payload.error;
             }
             return {...state, taskList : {...taskList,items: taskList.items},createAction: {...state.createAction,...payload}};
-          }
+        }
+
+        case ACTIONS_TYPES.UPDATE_TASK: {
+            const payload = action.payload;
+            const taskList = state.taskList;
+            if(payload.status === STATUS.SUCCESS) {
+                const index = taskList.items.findIndex(({id}) => id === payload.id);
+                if(index !== -1 && payload.title) {
+                    taskList.items[index].title = payload.title; 
+                }
+            }
+            if(payload.error) {
+                state.taskList.error = payload.error;
+            }
+            return {...state,taskList: {...taskList,items: [...taskList.items]},updateAction: {...state.updateAction,...payload}}
+        }
 
         case ACTIONS_TYPES.DELETE_TASK: {
             const payload = action.payload;
             const taskList = state.taskList;
             if(payload.status === STATUS.SUCCESS) {
-                console.log(taskList);
                 const index = taskList.items.findIndex(({id}) => id === payload.id);
-                console.log(payload.id,index);
                 if(index !== -1) {
                     taskList.items.splice(index,1);
                 }
@@ -47,6 +60,7 @@ const reducer : Reducer<MainState,AllActions> = (state = defaultState,action) =>
             }
             return {...state,taskList: {...taskList,items: [...taskList.items]},deleteAction: {...state.deleteAction,...payload}}
         }
+
         default: {
             return {...state};
         }

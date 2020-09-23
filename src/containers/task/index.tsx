@@ -2,8 +2,6 @@ import React from 'react';
 import {Input} from '@components/index';
 import {Wrapper,ChildrenWrapper} from './styles';
 import {Formik,Form,FormikHelpers} from 'formik';
-import Actions from '@store/allActions';
-import { useThunkDispatch } from '@store/index';
 
 
 export interface FormikValues {
@@ -16,12 +14,14 @@ interface Props {
     error?: string;
     align?: string;
     onSuccess?(): void;
+    onFocus?(): void;
+    onBlur?(): void;
+    onChange?(value: string): void;
+    onSubmit?(title: string): Promise<void>
 }
 
 
-const Task : React.FC<Props> = ({description = '',disabled = false,children,align = 'right',onSuccess}) => {
-    const dispatch = useThunkDispatch();
-
+const Task : React.FC<Props> = ({description = '',disabled = false,children,align = 'right',onSuccess,onFocus,onBlur,onSubmit,onChange}) => {
 
     const initialValues : FormikValues =  {
         title: description
@@ -36,7 +36,9 @@ const Task : React.FC<Props> = ({description = '',disabled = false,children,alig
 
     const handleSubmit = async ({title} : FormikValues,actions : FormikHelpers<FormikValues>)=> {
         try{
-            await dispatch(Actions.Main.createTaskAsync(title));
+            if(typeof onSubmit === 'function')  {
+                await onSubmit(title);
+            }
             if(typeof onSuccess === 'function') {
                 onSuccess();
             }
@@ -45,12 +47,38 @@ const Task : React.FC<Props> = ({description = '',disabled = false,children,alig
         }
     }
 
+    const handleFocus = () => {
+        if(typeof onFocus === 'function') {
+            onFocus();
+        }
+    }
+
+
+    const customHandleBlur = () => {
+        if(typeof onBlur === 'function') {
+            onBlur();
+        }
+    }
+
+    const handleChangeCustom : React.ChangeEventHandler<HTMLInputElement> = (e) => {
+        if(typeof onChange === 'function') {
+            onChange(e.target.value);
+        }
+        
+    }
+
     return (
         <Wrapper>
             <Formik enableReinitialize initialValues={initialValues} onSubmit={handleSubmit} validate={validate} >
-                {({ errors }) => (
+                {({ errors,handleChange,handleBlur }) => (
                     <Form>
-                        <Input disabled={disabled} label="Краткое описание" error={errors.title} name="title" id="title"/>
+                        <Input onChange={(e)=>{
+                                handleChange(e);
+                                handleChangeCustom(e);
+                            }} onFocus={handleFocus} onBlur={(e) => {
+                                handleBlur(e);
+                                customHandleBlur();
+                            }} disabled={disabled} label="Краткое описание" error={errors.title} name="title" id="title"/>
                         <ChildrenWrapper align={align}>{children}</ChildrenWrapper>
                     </Form>
                 )}

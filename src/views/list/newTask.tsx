@@ -4,6 +4,8 @@ import {
     Popup
 } from '@components/index';
 import Task from '@containers/task';
+import Actions from '@store/allActions';
+import { useThunkDispatch } from '@store/index';
 
 interface Props {
     visibility : boolean;
@@ -11,6 +13,13 @@ interface Props {
 }
 
 const NewTask : React.FC<Props> = ({visibility,onClose}) => {
+    const dispatch = useThunkDispatch();
+
+
+    const handleSubmit = useCallback(async (title: string)=>{
+        await dispatch(Actions.Main.createTaskAsync(title));
+    },[])
+
     const handleClose = useCallback(() => {
         if(typeof onClose === 'function') {
             onClose();
@@ -20,7 +29,7 @@ const NewTask : React.FC<Props> = ({visibility,onClose}) => {
     
     return(
         <Popup visibility={visibility} onClose={handleClose}>
-            <Task onSuccess={handleClose}>
+            <Task onSuccess={handleClose} onSubmit={handleSubmit}>
                 <Button color='#39B54A'>Создать</Button>
             </Task>
         </Popup>

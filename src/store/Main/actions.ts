@@ -63,7 +63,7 @@ export  function getTaskListAsync() : ThunkResult<void> {
 
 /** Get list action end */
 
-/** create action start */
+/** Create action start */
 
 type CreateTaskActionPayload = {
     status: STATUS,
@@ -118,11 +118,71 @@ export function createTaskAsync(title :string) : ThunkResult<void> {
     }
 }
 
+/** Create action end */
 
-interface UpdateTaskAction extends Action<ACTIONS_TYPES.UPDATE_TASK> {
-    payload: {}
+/** Update action start */
+type UpdateTaskActionPayload = {
+    id: number;
+    status: STATUS;
+    title?: string;
+    error?: string;
 }
 
+interface UpdateTaskAction extends Action<ACTIONS_TYPES.UPDATE_TASK> {
+    payload: UpdateTaskActionPayload
+}
+
+export function updateTask (payload: UpdateTaskActionPayload) : UpdateTaskAction {
+    return {
+        type: ACTIONS_TYPES.UPDATE_TASK,
+        payload
+    }
+}
+
+export function updateTaskAsync (id: number,title: string) : ThunkResult<void> {
+    return async (dispatch,getState)=> {
+        const status = getState().main.deleteAction.status;
+        if(status === STATUS.LOADING) {
+            return;
+        }
+
+        try {
+            dispatch(updateTask({
+                id,
+                status: STATUS.LOADING
+            }));
+            const {uri,method} = TASK_API.update;
+            const response = await fetch(uri(id),{
+                method,
+                body: JSON.stringify({title} as TaskDTO.UpdateTaskInput)
+            });
+            if (!response.ok) {
+                throw new Error('Ошибка сети');
+            }
+            const data : TaskDTO.UpdateTaskResponse = await response.json();
+            if(data.success) {
+                dispatch(updateTask({
+                    id,
+                    status: STATUS.SUCCESS,
+                    title
+                }))
+            } else {
+                throw new Error(data.error);
+            }
+
+        } catch (e) {
+            dispatch(updateTask({
+                id,
+                status: STATUS.ERROR,
+                error: e.message
+            }))
+            throw e;
+        } 
+
+    }
+}
+
+/** Update action end */
 
 /** Delete action start */
 
@@ -181,4 +241,4 @@ export function deleteTaskAsync(id :number) : ThunkResult<void> {
 
 
 
-export type AllActions =  GetTaskListAction | DeleteTaskAction | CreateTaskAction;
+export type AllActions =  GetTaskListAction | DeleteTaskAction | CreateTaskAction | UpdateTaskAction;
