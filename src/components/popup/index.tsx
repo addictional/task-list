@@ -46,22 +46,19 @@ export const Popup : React.FC<Props> = ({children,visibility = true,onClose}) =>
                 classNames={TransitionName}
                 timeout={200} 
             >
-                {state => {
-                    console.log(state);
-                    return (
-                        <React.Fragment>
-                            <Background className={`${TransitionName}-${state}`} />
-                            <Overlay className={`${TransitionName}-${state}`} data-close={true} onClick={handleClose}>
-                                <Wrapper className={`${TransitionName}-${state}`}>
-                                    <Cross data-close={true} onClick={handleClose}>
-                                        <use xlinkHref="/sprite.svg#cross"/>
-                                    </Cross>
-                                    {children}
-                                </Wrapper>
-                            </Overlay>
-                        </React.Fragment>
-                    )
-                }}
+                {state => (
+                    <React.Fragment>
+                        <Background className={`${TransitionName}-${state}`} />
+                        <Overlay className={`${TransitionName}-${state}`} data-close={true} onClick={handleClose}>
+                            <Wrapper className={`${TransitionName}-${state}`}>
+                                <Cross data-close={true} onClick={handleClose}>
+                                    <use xlinkHref="/sprite.svg#cross"/>
+                                </Cross>
+                                {children}
+                            </Wrapper>
+                        </Overlay>
+                    </React.Fragment>
+                )}
             </CSSTransition>
     ,root as HTMLElement);
 }
