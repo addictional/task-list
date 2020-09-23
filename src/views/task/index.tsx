@@ -29,7 +29,7 @@ const TaskView : React.FC = () => {
                 setTitle(item.title);
             }
         }
-    },[items])
+    },[items])// eslint-disable-line react-hooks/exhaustive-deps
     return (
         <MainWrapper>
             <Title>Задача №{id}</Title>

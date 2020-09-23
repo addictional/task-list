@@ -1,5 +1,5 @@
 import React from 'react';
-import {Input,Button} from '@components/index';
+import {Input} from '@components/index';
 import {Wrapper,ChildrenWrapper} from './styles';
 import {Formik,Form,FormikHelpers} from 'formik';
 import Actions from '@store/allActions';
@@ -23,7 +23,7 @@ const Task : React.FC<Props> = ({description = '',disabled = false,children,alig
     const dispatch = useThunkDispatch();
 
 
-    const initialValues : FormikValues = {
+    const initialValues : FormikValues =  {
         title: description
     };
     const validate = ({title} : FormikValues) => {
