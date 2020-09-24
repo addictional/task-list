@@ -4,26 +4,35 @@ import styled from 'styled-components';
 export const TransitionName = 'modal'
 
 export const Overlay = styled.div`
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    display: flex;
-    width: 100%;
-    z-index: 3;
-    justify-content: center;
-    align-items: center;
-    display: flex;
-    transition: opacity 200ms;
-    &.${TransitionName}-exited {
-        visibility: hidden;
-        opacity: 0;
-    }
-    &.${TransitionName}-exiting {
-        opacity: 0;
-    }
-    &.${TransitionName}-entering {
-        opacity: 1;
-    }
+    ${({theme : {max,breakpoints}}) => `
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        display: flex;
+        width: 100%;
+        z-index: 3;
+        justify-content: center;
+        align-items: center;
+        align-items: flex-start;
+        display: flex;
+        transition: opacity .2s, backdrop-filter .2s;
+        backdrop-filter: blur(16px);
+        ${max(breakpoints.mobile)} {
+            align-items: flex-start;
+        }
+        &.${TransitionName}-exited {
+            visibility: hidden;
+            opacity: 0;
+            backdrop-filter: blur(0px);
+        }
+        &.${TransitionName}-exiting {
+            opacity: 0;
+        }
+        &.${TransitionName}-entering {
+            opacity: 1;
+            backdrop-filter: blur(16px);
+        }
+    `}
 `
 
 export const Wrapper = styled.div`
@@ -35,10 +44,9 @@ export const Wrapper = styled.div`
         padding: 30px 32px 32px;
         transition: transform 200ms ease-in-out;
         ${max(breakpoints.mobile)} {
-            width: 100%;
-            height: 100%;
             width: calc(100% - 20px);
-            padding: 60px 10px 10px;
+            padding: 18px 10px 10px;
+            border-radius:  0;
         }
         &.${TransitionName}-exited {
             transform: translateY(calc(-50vh - 50%));
@@ -65,7 +73,7 @@ export const Cross = styled.svg`
             transform: scale(1.1);
         }
         ${max(breakpoints.mobile)} {
-            top: 60px;
+            top: 18px;
             right: 10px;
         }
     `}    
