@@ -13,7 +13,6 @@ export const Overlay = styled.div`
         z-index: 3;
         justify-content: center;
         align-items: center;
-        align-items: flex-start;
         display: flex;
         transition: opacity .2s, backdrop-filter .2s;
         backdrop-filter: blur(16px);
