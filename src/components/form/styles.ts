@@ -39,5 +39,6 @@ export const InputErrorDescription = styled.span`
         line-height: 14px;
         position: absolute;
         bottom: -20px;
+        left: 0;
     `}
 `;

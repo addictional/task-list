@@ -18,6 +18,7 @@ export const ChildrenWrapper = styled.div<Props>`
     justify-content:${({align}) => align === 'right' ? 'flex-end' : 'flex-start'};
     ${({theme :{max,breakpoints}}) => `
         ${max(breakpoints.mobile)} {
+            margin-top: 30px;
             justify-content: center;
         }
     `}
