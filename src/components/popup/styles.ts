@@ -15,21 +15,18 @@ export const Overlay = styled.div`
         align-items: center;
         display: flex;
         transition: opacity .2s, backdrop-filter .2s;
-        backdrop-filter: blur(16px);
         ${max(breakpoints.mobile)} {
             align-items: flex-start;
         }
         &.${TransitionName}-exited {
             visibility: hidden;
             opacity: 0;
-            backdrop-filter: blur(0px);
         }
         &.${TransitionName}-exiting {
             opacity: 0;
         }
         &.${TransitionName}-entering {
             opacity: 1;
-            backdrop-filter: blur(16px);
         }
     `}
 `
